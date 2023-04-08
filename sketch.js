@@ -66,9 +66,20 @@ function randomCoordinate(max) {
 }
 
 function randomIntensity() {
-  return randomInt(8, 64);
+  let result = randomInt(8, 64);
+  if (randomPercentage(20)) {
+    result += randomInt(8, 64);
+  }
+  if (randomPercentage(10)) {
+    result += randomInt(8, 64);
+  }
+  return result;
 }
 
 function randomInt(min, max) {
   return Math.floor((Math.random() * max) + min);
+}
+
+function randomPercentage(percentage) {
+  return (Math.random() * 100) < percentage;
 }

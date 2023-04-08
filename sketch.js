@@ -10,6 +10,7 @@ function setup() {
   }
 
   drawCloud();
+  drawLightning(200);
 }
 
 function draw() {
@@ -49,6 +50,38 @@ function drawCloud() {
       set(i, j, cloudColor);
     }
   }
+  updatePixels();
+}
+
+function drawLightning(startPosition) {
+  if (startPosition < 0 || startPosition > 400) {
+    console.error("Invalid start position");
+    return;
+  }
+
+  let x = startPosition;
+  let y = 0;
+  let lightningColor = color('black');
+
+  while (y < 400) {
+    set(x, y, lightningColor);
+
+    y += 1;
+    let minAir = airGrid[x][y];
+    let minX = x;
+
+    if (x > 0 && airGrid[x-1][y] < minAir) {
+      minAir = airGrid[x-1][y];
+      minX = x-1;
+    }
+    if (x < 399 && airGrid[x+1][y] < minAir) {
+      minAir = airGrid[x+1][y];
+      minX = x+1;
+    }
+
+    x = minX;
+  }
+
   updatePixels();
 }
 

@@ -6,12 +6,13 @@ function setup() {
   frameRate(5);
   createCanvas(400, 400);
 
-  let sliderStart = randomInt(0, 400);
+  let sliderStart = randomInt(100, 300);
+  console.log(sliderStart);
 
   slider = createSlider(0, 399, sliderStart);
   slider.position(0, 420);
   slider.size(400);
-  slider.mouseMoved(() => {
+  slider.mouseReleased(() => {
     drawCloud();
     drawLightning(slider.value());
   });
@@ -42,10 +43,9 @@ function draw() {
     } else {
       slider.value(x + 10);
     }
+    drawCloud();
+    drawLightning(slider.value());  
   }
-
-  drawCloud();
-  drawLightning(slider.value());
 }
 
 const cloudRadius = 200;
@@ -94,7 +94,7 @@ function drawLightning(startPosition) {
   let y = 0;
   let lightningColor = color('black');
 
-  while (y < 400) {
+  while (y < 399) {
     set(x, y, lightningColor);
 
     y += 1;
@@ -108,6 +108,21 @@ function drawLightning(startPosition) {
     if (x < 399 && airGrid[x+1][y] < minAir) {
       minAir = airGrid[x+1][y];
       minX = x+1;
+    }
+
+    if (x > 0 && airGrid[x][y] == airGrid[x-1][y]) {
+      if (randomPercentage(50)) {
+        minX = minX;
+      } else {
+        minX = x - 1;        
+      }
+    }
+    if (x < 398 && airGrid[x][y] == airGrid[x+1][y]) {
+      if (randomPercentage(50)) {
+        minX = minX;
+      } else {
+        minX = x + 1;        
+      }
     }
 
     x = minX;
@@ -141,7 +156,7 @@ function randomIntensity() {
 }
 
 function randomInt(min, max) {
-  return Math.floor((Math.random() * max) + min);
+  return Math.floor((Math.random() * (max - min)) + min);
 }
 
 function randomPercentage(percentage) {

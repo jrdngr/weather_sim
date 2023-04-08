@@ -1,3 +1,5 @@
+const randomizeEqualValue = false;
+
 let slider;
 let playButton;
 let isPlaying = false;
@@ -110,18 +112,20 @@ function drawLightning(startPosition) {
       minX = x+1;
     }
 
-    if (x > 0 && airGrid[x][y] == airGrid[x-1][y]) {
-      if (randomPercentage(50)) {
-        minX = minX;
-      } else {
-        minX = x - 1;        
+    if (randomizeEqualValue) {
+      if (x > 0 && airGrid[x][y] == airGrid[x-1][y]) {
+        if (randomPercentage(50)) {
+          minX = minX;
+        } else {
+          minX = x - 1;        
+        }
       }
-    }
-    if (x < 398 && airGrid[x][y] == airGrid[x+1][y]) {
-      if (randomPercentage(50)) {
-        minX = minX;
-      } else {
-        minX = x + 1;        
+      if (x < 398 && airGrid[x][y] == airGrid[x+1][y]) {
+        if (randomPercentage(50)) {
+          minX = minX;
+        } else {
+          minX = x + 1;        
+        }
       }
     }
 

@@ -1,3 +1,4 @@
+const shouldDrawCloud = true;
 const randomizeEqualValue = false;
 
 let slider;
@@ -9,14 +10,12 @@ function setup() {
   createCanvas(400, 400);
 
   let sliderStart = randomInt(100, 300);
-  console.log(sliderStart);
 
   slider = createSlider(0, 399, sliderStart);
   slider.position(0, 420);
   slider.size(400);
   slider.mouseReleased(() => {
-    drawCloud();
-    drawLightning(slider.value());
+    drawAll(slider.value());
   });
 
   playButton = createButton('play');
@@ -32,8 +31,7 @@ function setup() {
     setRegion(x, y, intensity);
   }
 
-  drawCloud();
-  drawLightning(slider.value());
+  drawAll(slider.value());
 }
 
 function draw() {
@@ -45,8 +43,7 @@ function draw() {
     } else {
       slider.value(x + 10);
     }
-    drawCloud();
-    drawLightning(slider.value());  
+    drawAll(slider.value());
   }
 }
 
@@ -74,12 +71,22 @@ function setRegion(centerX, centerY, intensity) {
   }
 }
 
+function drawAll(lightningStart) {
+  background('black');
+
+  if (shouldDrawCloud) {
+    drawCloud();
+  }
+
+  drawLightning(lightningStart);
+}
+
 function drawCloud() {
   // Draw cloud
   for (let i = 0; i < 400; i++) {
     for (let j = 0; j < 400; j++) {
-      let cloudColor = color("#0000FF");
-      cloudColor.setAlpha(airGrid[i][j]);  
+      let cloudColor = color("#000000");
+      cloudColor.setBlue(airGrid[i][j]);  
       set(i, j, cloudColor);
     }
   }
@@ -94,7 +101,7 @@ function drawLightning(startPosition) {
 
   let x = startPosition;
   let y = 0;
-  let lightningColor = color('black');
+  let lightningColor = color('yellow');
 
   while (y < 399) {
     set(x, y, lightningColor);

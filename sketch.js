@@ -1,7 +1,27 @@
+let slider;
+let playButton;
+let isPlaying = false;
+
 function setup() {
-  frameRate(60);
+  frameRate(5);
   createCanvas(400, 400);
 
+  let sliderStart = randomInt(0, 400);
+
+  slider = createSlider(0, 399, sliderStart);
+  slider.position(0, 420);
+  slider.size(400);
+  slider.mouseMoved(() => {
+    drawCloud();
+    drawLightning(slider.value());
+  });
+
+  playButton = createButton('play');
+  playButton.position(0, 450);
+  playButton.mousePressed(() => {
+    isPlaying = !isPlaying;
+  });
+  
   for (let i = 0; i < 10; i++) {
     let x = randomCoordinate(400);
     let y = randomCoordinate(400);
@@ -10,11 +30,22 @@ function setup() {
   }
 
   drawCloud();
-  drawLightning(200);
+  drawLightning(slider.value());
 }
 
 function draw() {
+  let x = slider.value();
 
+  if (isPlaying) {
+    if (x >= 399) {
+      slider.value(0);
+    } else {
+      slider.value(x + 10);
+    }
+  }
+
+  drawCloud();
+  drawLightning(slider.value());
 }
 
 const cloudRadius = 200;
